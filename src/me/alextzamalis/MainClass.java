@@ -15,9 +15,6 @@ public class MainClass {
         UUID uuid = new UUID(random.nextLong(), random.nextLong());     // Generates random UUID with Long numbers
         MessageUtil messageUtil = new MessageUtil();                    // Calls few starting messages in app startup
         User user = new User();                                         // starts off for user sign up/sign in
-
-
-
     }
 
 }
