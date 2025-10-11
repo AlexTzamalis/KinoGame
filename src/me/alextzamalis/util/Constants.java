@@ -1,0 +1,7 @@
+package me.alextzamalis.util;
+
+public class Constants {
+
+    public final String USER_CREDENTIALS_FILE = "userCredentials.txt";
+    public final String USER_DATA_FILE = "userData.txt";
+}
