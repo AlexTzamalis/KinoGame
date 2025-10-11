@@ -11,8 +11,10 @@ public class User {
     private String userName;
     private String userLastName;
     private String userEmail;
-    private String userPassword;
     private int userAge;
+
+    private String userPassword;
+    private String hashedPassword;
 
     public User() {
 
@@ -46,13 +48,20 @@ public class User {
         return email;
     }
 
-    void setUserPassword() {
+    void setUserPassword() throws NoSuchAlgorithmException {
+        hashedPassword = encryptor.encryptString(this.userPassword);
 
     }
 
-    String getUserPassword(String password) throws NoSuchAlgorithmException {
+    String getUserHashedPassword() throws NoSuchAlgorithmException {
 
-        return encryptor.encryptString(this.userPassword);
+        return this.hashedPassword;
+    }
+
+    void passwordChecker() throws NoSuchAlgorithmException {
+        if(encryptor.encryptString(userPassword).equals(getUserHashedPassword())) {
+            System.out.println("Correct");
+        }
     }
 
 
