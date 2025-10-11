@@ -1,15 +1,18 @@
 package me.alextzamalis.process;
 
-import java.util.HashMap;
+import me.alextzamalis.encryption.Encryptor;
+
+import java.security.NoSuchAlgorithmException;
 
 public class User {
+
+    Encryptor encryptor = new Encryptor();
 
     private String userName;
     private String userLastName;
     private String userEmail;
     private String userPassword;
     private int userAge;
-
 
     public User() {
 
@@ -47,9 +50,9 @@ public class User {
 
     }
 
-    String getUserPassword(String password) {
+    String getUserPassword(String password) throws NoSuchAlgorithmException {
 
-        return password;
+        return encryptor.encryptString(this.userPassword);
     }
 
 
