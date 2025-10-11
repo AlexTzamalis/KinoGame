@@ -1,19 +1,29 @@
 package me.alextzamalis.util;
 
+import me.alextzamalis.process.UserProcess;
 import me.alextzamalis.scanner.UserInput;
 
+import java.io.IOException;
 import java.util.Date;
 
-public class MessageUtil {
+public class MessageUtil{
 
-    Date date = new Date();
-    UserInput userInput = new UserInput();
+    private Date date = new Date();
+    private UserInput userInput;
+    private UserProcess userProcess;
+
 
     public MessageUtil() {
-        currentDate();
-        welcomeMesasge();
-        signInsignUpMessage();
 
+    }
+
+    // setters for wiring
+    public void setUserInput(UserInput userInput) {
+        this.userInput = userInput;
+    }
+
+    public void setUserProcess(UserProcess userProcess) {
+        //this.userProcess = userProcess;
     }
 
     public void currentDate() {
@@ -27,20 +37,22 @@ public class MessageUtil {
 
     public void signInsignUpMessage() {
         System.out.print("Sign In? or Sign up? (in/up) >> ");
-        userInput.userSignInSignUp();
+        //userInput.userSignInSignUp();
 
     }
 
-    public void signInStageMessages() {
-        System.out.print("Give your name >> ");
+    public void userFirstNameInput(){
+        System.out.print("Enter your First Name: ");
+        //userInput.userFirstNameInput();
+    }
 
+    public void userLastNameInput() {
+        System.out.print("Enter your Last Name: ");
+        //userInput.userLastNameInput();
     }
 
     public void signUpStageMessages() {
+        System.out.print("Give your name: ");
 
     }
-
-
-
-
 }

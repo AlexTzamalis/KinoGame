@@ -1,49 +1,68 @@
 package me.alextzamalis.scanner;
 
 import me.alextzamalis.process.UserProcess;
+import me.alextzamalis.util.Constants;
 import java.util.Scanner;
 
-public class UserInput {
+public class UserInput{
 
-    Scanner input = new Scanner(System.in);
-    UserProcess user = new UserProcess();
-    String userCurretInput;
+
+    private UserProcess user;
+    private Constants constants = new Constants();
+    private final Scanner input = new Scanner(System.in);
+
+    private String userCurrentInput;
 
     public UserInput() {
 
     }
 
+    // setter for wiring after creation
+    public void setUserProcess(UserProcess user) {
+        this.user = user;
+    }
 
     /*
        Stores users current input and checks if the user wants to sign in or sign up.
      */
     public void userSignInSignUp() {
-        userCurretInput = input.nextLine();
+        userCurrentInput = input.nextLine();
         while(true) {
-            if (userCurretInput.equalsIgnoreCase("in")) {
-                signInStage();
-            } else if (userCurretInput.equalsIgnoreCase("up")) {
-                signUpStage();
+            if (userCurrentInput.equalsIgnoreCase("in")) {
+                if (user != null) user.signInProcess();
+                break;
+            } else if (userCurrentInput.equalsIgnoreCase("up")) {
+                if (user != null) user.signUpProcess();
+                break;
+
             } else {
                 System.out.print("Wrong input! you can only choose (in / up) >> ");
-                userCurretInput = input.nextLine();
+                userCurrentInput = input.nextLine();
             }
         }
     }
 
-    /*
-      Start sign in! process for the user in UserProcess class
-     */
-    public void signInStage() {
-        user.signInProcess();
-
+    public void userFirstNameInput() {
+        userCurrentInput = input.nextLine();
+        while(userCurrentInput.length() < constants.MIN_NAME_CHAR || userCurrentInput.length() > constants.MAX_NAME_CHAR) {
+            System.out.print("You must have a name that has 3-20 characters >> ");
+            userCurrentInput = input.nextLine();
+        }
+        if (user != null) {
+            // example: user.setUserName(userCurrentInput);
+        }
     }
 
-    /*
-      Start sign up! process for the user in UserProcess class
-     */
-    public void signUpStage() {
-        user.signUpProcess();
+    public void userLastNameInput() {
+        userCurrentInput = input.nextLine();
+        if (user != null) {
+            // user.setUserLastName(userCurrentInput);
+        }
+    }
+
+    // close scanner on app exit if added on exit
+    public void closeScanner() {
+        input.close();
     }
 
 }
