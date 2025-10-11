@@ -1,5 +1,6 @@
 package me.alextzamalis.encription;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
