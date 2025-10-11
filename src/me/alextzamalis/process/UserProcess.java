@@ -15,16 +15,15 @@ public class UserProcess {
     private String userLastName;
     private String userEmail;
     private int userAge;
-
     private String userPassword;
     private String hashedPassword;
 
-    public UserProcess() {
-
-    }
+    //public UserProcess() {}
 
     public void signUpProcess() {
         messageUtil.signUpStageMessages();
+
+        userHasAccount = true;
     }
 
     public void signInProcess() {

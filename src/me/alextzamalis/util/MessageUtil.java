@@ -32,6 +32,7 @@ public class MessageUtil {
     }
 
     public void signInStageMessages() {
+        System.out.print("Give your name >> ");
 
     }
 
