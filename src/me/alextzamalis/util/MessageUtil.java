@@ -1,11 +1,13 @@
 package me.alextzamalis.util;
 
-import me.alextzamalis.process.User;
+import me.alextzamalis.scanner.UserInput;
+
 import java.util.Date;
 
 public class MessageUtil {
 
     Date date = new Date();
+    UserInput userInput = new UserInput();
 
     public MessageUtil() {
         currentDate();
@@ -20,7 +22,9 @@ public class MessageUtil {
     }
 
     public void signInsignUpMessage() {
-        System.out.print("Sign In? or Sign up? (in/up)");
+        System.out.print("Sign In? or Sign up? (in/up) >> ");
+        userInput.userSignInSignUp();
+
     }
 
     public void currentDate() {

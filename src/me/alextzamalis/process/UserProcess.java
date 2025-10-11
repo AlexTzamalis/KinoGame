@@ -4,10 +4,11 @@ import me.alextzamalis.encryption.Encryptor;
 
 import java.security.NoSuchAlgorithmException;
 
-public class User {
+public class UserProcess {
 
     Encryptor encryptor = new Encryptor();
 
+    private boolean userHasAccount = false;
     private String userName;
     private String userLastName;
     private String userEmail;
@@ -16,44 +17,52 @@ public class User {
     private String userPassword;
     private String hashedPassword;
 
-    public User() {
+    public UserProcess() {
+
+    }
+
+    public void signInProcess() {
+
+    }
+
+    public void signUpProcess() {
 
     }
 
 
-    void setUserName() {
+    public void setUserName() {
 
     }
 
-    String getUserName(String name) {
+    public String getUserName(String name) {
 
         return name;
     }
 
-    void setUserLastName() {
+    public void setUserLastName() {
 
     }
 
-    String getUseRLastName(String lastName) {
+    public String getUserLastName(String lastName) {
 
         return lastName;
     }
 
-    void setUserEmail() {
+    public void setUserEmail() {
 
     }
 
-    String getUserEmail(String email) {
+    public String getUserEmail(String email) {
 
         return email;
     }
 
-    void setUserPassword() throws NoSuchAlgorithmException {
+    public void setUserPassword() throws NoSuchAlgorithmException {
         hashedPassword = encryptor.encryptString(this.userPassword);
 
     }
 
-    String getUserHashedPassword() throws NoSuchAlgorithmException {
+    public String getUserHashedPassword() throws NoSuchAlgorithmException {
 
         return this.hashedPassword;
     }

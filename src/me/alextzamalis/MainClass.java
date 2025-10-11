@@ -1,6 +1,6 @@
 package me.alextzamalis;
 
-import me.alextzamalis.process.User;
+import me.alextzamalis.process.UserProcess;
 import me.alextzamalis.util.MessageUtil;
 
 import java.util.Random;
@@ -14,7 +14,7 @@ public class MainClass {
         Scanner scan = new Scanner(System.in);                          // User input (might remove it from the main class
         UUID uuid = new UUID(random.nextLong(), random.nextLong());     // Generates random UUID with Long numbers
         MessageUtil messageUtil = new MessageUtil();                    // Calls few starting messages in app startup
-        User user = new User();                                         // starts off for user sign up/sign in
+        UserProcess user = new UserProcess();                           // starts off for user sign up/sign in
     }
 
 }
