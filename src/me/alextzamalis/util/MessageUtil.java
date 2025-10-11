@@ -16,6 +16,10 @@ public class MessageUtil {
 
     }
 
+    public void currentDate() {
+        System.out.println(this.date);
+    }
+
     public void welcomeMesasge() {
         System.out.println("--- Welcome to Kino Game! ---");
         System.out.println();
@@ -27,7 +31,15 @@ public class MessageUtil {
 
     }
 
-    public void currentDate() {
-        System.out.println(this.date);
+    public void signInStageMessages() {
+
     }
+
+    public void signUpStageMessages() {
+
+    }
+
+
+
+
 }

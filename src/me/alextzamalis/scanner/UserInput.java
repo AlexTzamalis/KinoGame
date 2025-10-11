@@ -15,7 +15,7 @@ public class UserInput {
 
 
     /*
-       Stores users
+       Stores users current input and checks if the user wants to sign in or sign up.
      */
     public void userSignInSignUp() {
         userCurretInput = input.nextLine();

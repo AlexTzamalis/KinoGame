@@ -1,12 +1,14 @@
 package me.alextzamalis.process;
 
 import me.alextzamalis.encryption.Encryptor;
+import me.alextzamalis.util.MessageUtil;
 
 import java.security.NoSuchAlgorithmException;
 
 public class UserProcess {
 
     Encryptor encryptor = new Encryptor();
+    MessageUtil messageUtil = new MessageUtil();
 
     private boolean userHasAccount = false;
     private String userName;
@@ -21,14 +23,15 @@ public class UserProcess {
 
     }
 
-    public void signInProcess() {
-
-    }
-
     public void signUpProcess() {
-
+        messageUtil.signUpStageMessages();
     }
 
+    public void signInProcess() {
+        userHasAccount = true;
+        messageUtil.signInStageMessages();
+
+    }
 
     public void setUserName() {
 
