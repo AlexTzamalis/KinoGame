@@ -1,4 +1,4 @@
-package me.alextzamalis.encription;
+package me.alextzamalis.encryption;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
