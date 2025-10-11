@@ -11,7 +11,11 @@ public class Encryptor {
         // SHA-384 and SHA-512
         MessageDigest md = MessageDigest.getInstance("MD5");
 
-        return null;
+        byte[] messageDigest = md.digest(input.getBytes());
+
+        BigInteger bigInt = new BigInteger(1,messageDigest);
+
+        return bigInt.toString(16);
     }
 
 
