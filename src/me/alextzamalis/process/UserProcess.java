@@ -20,10 +20,6 @@ public class UserProcess {
     private String userPassword;
     private String hashedPassword;
 
-//    public UserProcess(String unHashedPassword) {
-//        this.userPassword = unHashedPassword;
-//    }
-
     public UserProcess(UserInput userInput, MessageUtil messageUtil) {
         this.userInput = userInput;
         this.messageUtil = messageUtil;
@@ -69,9 +65,23 @@ public class UserProcess {
         return email;
     }
 
-    public void setUserPassword() throws NoSuchAlgorithmException {
-        hashedPassword = encryptor.encryptString(this.userPassword);
+    public void setUserPassword(String password) throws NoSuchAlgorithmException {
+        userPassword = password;
+        System.out.println("DEBUG >> password = " + userPassword);
+        setCurrentPasswordToHashed(password);
     }
+
+    public void setCurrentPasswordToHashed(String password) throws NoSuchAlgorithmException {
+        System.out.println("password = " + password + " hashedPassword = " + hashedPassword);
+        hashedPassword = encryptor.encryptString(password);
+
+        // current passwords reset in here and we only store the hashed password
+        userPassword = null;
+        password = null;
+
+        System.out.println("userPassword = " + userPassword + " password "  + password + " hashedPassword = " + hashedPassword);
+    }
+
 
     public String getUserHashedPassword() throws NoSuchAlgorithmException {
         return this.hashedPassword;

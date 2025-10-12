@@ -6,6 +6,7 @@ import me.alextzamalis.util.Constants;
 import me.alextzamalis.util.MessageUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class UserInput{
@@ -37,7 +38,6 @@ public class UserInput{
             System.out.print("Wrong input! you can only choose (in / up) >> ");
             userCurrentInput = input.nextLine();
         }
-
     }
 
     public void userFirstNameInput(MessageUtil messageUtil) {
@@ -50,6 +50,9 @@ public class UserInput{
         if (user != null) {
             // example: user.setUserName(userCurrentInput);
         }
+        user.setUserFirstName(userCurrentInput);
+
+        userCurrentInput = null; // unassigns the current first name after it is set to the user and stored
     }
 
     public void userLastNameInput(MessageUtil messageUtil) {
@@ -62,6 +65,8 @@ public class UserInput{
         if (user != null) {
             // example: user.setUserName(userCurrentInput);
         }
+
+        userCurrentInput = null; // unassigns the current last name after it is set to the user and stored
     }
 
     public void userEmailInput(MessageUtil messageUtil) {
@@ -72,6 +77,8 @@ public class UserInput{
                 if (isValidEmail(userCurrentEmail)) {
                     if (user != null) {
                         user.setUserEmail(userCurrentEmail);
+
+                        userCurrentEmail = null; // unassigns the current email after it is set to the user and stored
                     }
                     break;      // exit loop once current email is valid
                 } else {
@@ -96,14 +103,17 @@ public class UserInput{
         return email != null && email.matches(emailRegex);
     }
 
-    public void userPasswordInput(MessageUtil messageUtil) {
+    public void userPasswordInput(MessageUtil messageUtil) throws NoSuchAlgorithmException {
         messageUtil.userPasswordInput();
         userCurrentPassword = input.nextLine();
         while(userCurrentPassword.length() < constants.MIN_PASSWORD_DIGITS || userCurrentPassword.length() > constants.MAX_PASSWORD_DIGITS) {
             System.out.print("You must have a password that has atleast 4 or more digits: ");
             userCurrentPassword = input.nextLine();
         }
-        u
+        user.setUserPassword(userCurrentPassword);
+
+        userCurrentPassword = null; // unassigns the current password after it is set to the user and stored
+
     }
 
     // close scanner on app exit if added on exit

@@ -34,10 +34,10 @@ public class MainClass {
         userInput.userEmailInput(messageUtil);
         userInput.userPasswordInput(messageUtil);
 
-        userProcess.getUserHashedPassword();
-        //new UserProcess();
+        //System.out.println(userProcess.getUserHashedPassword());
 
+
+        // application termination
         userInput.closeScanner();
     }
-
 }
