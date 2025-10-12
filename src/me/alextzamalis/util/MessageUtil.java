@@ -23,7 +23,7 @@ public class MessageUtil{
     }
 
     public void setUserProcess(UserProcess userProcess) {
-        //this.userProcess = userProcess;
+        this.userProcess = userProcess;
     }
 
     public void currentDate() {
@@ -37,22 +37,22 @@ public class MessageUtil{
 
     public void signInsignUpMessage() {
         System.out.print("Sign In? or Sign up? (in/up) >> ");
-        //userInput.userSignInSignUp();
 
     }
 
     public void userFirstNameInput(){
         System.out.print("Enter your First Name: ");
-        //userInput.userFirstNameInput();
     }
 
     public void userLastNameInput() {
         System.out.print("Enter your Last Name: ");
-        //userInput.userLastNameInput();
     }
 
-    public void signUpStageMessages() {
-        System.out.print("Give your name: ");
+    public void userEmailInput() {
+        System.out.print("Enter your Email: ");
+    }
 
+    public void userPasswordInput() {
+        System.out.print("Enter your Password: ");
     }
 }

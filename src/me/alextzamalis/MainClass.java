@@ -4,11 +4,12 @@ import me.alextzamalis.process.UserProcess;
 import me.alextzamalis.scanner.UserInput;
 import me.alextzamalis.util.MessageUtil;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.UUID;
 
 public class MainClass {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchAlgorithmException {
 
         Random random = new Random();                                   // Generates a random number
         UUID uuid = new UUID(random.nextLong(), random.nextLong());     // Generates random UUID with Long numbers
@@ -28,6 +29,15 @@ public class MainClass {
         messageUtil.signInsignUpMessage();
 
         userInput.userSignInSignUp();
+        userInput.userFirstNameInput(messageUtil);
+        userInput.userLastNameInput(messageUtil);
+        userInput.userEmailInput(messageUtil);
+        userInput.userPasswordInput(messageUtil);
+
+        userProcess.getUserHashedPassword();
+        //new UserProcess();
+
+        userInput.closeScanner();
     }
 
 }

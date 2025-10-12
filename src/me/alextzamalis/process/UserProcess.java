@@ -20,13 +20,19 @@ public class UserProcess {
     private String userPassword;
     private String hashedPassword;
 
+//    public UserProcess(String unHashedPassword) {
+//        this.userPassword = unHashedPassword;
+//    }
+
     public UserProcess(UserInput userInput, MessageUtil messageUtil) {
         this.userInput = userInput;
         this.messageUtil = messageUtil;
     }
 
+
+
     public void signUpProcess() {
-        messageUtil.signUpStageMessages();
+        //messageUtil.signUpStageMessages();
         // call userInput methods to collect data:
         messageUtil.userFirstNameInput();
         messageUtil.userLastNameInput();
@@ -71,7 +77,7 @@ public class UserProcess {
         return this.hashedPassword;
     }
 
-    void passwordChecker() throws NoSuchAlgorithmException {
+    private void passwordChecker() throws NoSuchAlgorithmException {
         if(encryptor.encryptString(userPassword).equals(getUserHashedPassword())) {
             System.out.println("Correct");
         }

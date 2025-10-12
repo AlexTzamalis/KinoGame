@@ -7,4 +7,7 @@ public class Constants {
 
     public final int MIN_NAME_CHAR = 3;
     public final int MAX_NAME_CHAR = 20;
+
+    public final int MIN_PASSWORD_DIGITS = 4;
+    public final int MAX_PASSWORD_DIGITS = 48;
 }
