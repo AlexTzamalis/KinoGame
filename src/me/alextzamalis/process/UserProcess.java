@@ -57,6 +57,14 @@ public class UserProcess {
         return lastName;
     }
 
+    public void setUserAge(int age) {
+        this.userAge = age;
+    }
+
+    public int getUserAge(int age) {
+        return age;
+    }
+
     public void setUserEmail(String email) {
         this.userEmail = email;
     }
