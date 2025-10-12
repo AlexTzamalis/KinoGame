@@ -1,5 +1,6 @@
 package me.alextzamalis;
 
+import me.alextzamalis.file.FileWriters;
 import me.alextzamalis.process.UserProcess;
 import me.alextzamalis.scanner.UserInput;
 import me.alextzamalis.util.MessageUtil;
@@ -15,8 +16,9 @@ public class MainClass {
         UUID uuid = new UUID(random.nextLong(), random.nextLong());     // Generates random UUID with Long numbers
 
         UserInput userInput = new UserInput();                          // User input (might remove it from the main class
-        MessageUtil messageUtil = new MessageUtil();                    // Calls few starting messages in app startup
-        UserProcess userProcess = new UserProcess(userInput, messageUtil);                           // starts off for user sign up/sign in
+        MessageUtil messageUtil = new MessageUtil();
+        FileWriters fileWriters = new FileWriters();
+        UserProcess userProcess = new UserProcess(userInput, messageUtil, fileWriters);                           // starts off for user sign up/sign in
 
         userInput.setUserProcess(userProcess);
         messageUtil.setUserInput(userInput);
@@ -28,11 +30,17 @@ public class MainClass {
         messageUtil.welcomeMesasge();
         messageUtil.signInsignUpMessage();
 
+
+//        if (userInput.signInSignUpCheck()) {
+//
+//        }
         userInput.userSignInSignUp();
         userInput.userFirstNameInput(messageUtil);
         userInput.userLastNameInput(messageUtil);
         userInput.userEmailInput(messageUtil);
         userInput.userPasswordInput(messageUtil);
+
+
 
         //System.out.println(userProcess.getUserHashedPassword());
 

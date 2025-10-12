@@ -1,9 +1,11 @@
 package me.alextzamalis.process;
 
 import me.alextzamalis.encryption.Encryptor;
+import me.alextzamalis.file.FileWriters;
 import me.alextzamalis.scanner.UserInput;
 import me.alextzamalis.util.MessageUtil;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class UserProcess {
@@ -11,18 +13,22 @@ public class UserProcess {
     private final Encryptor encryptor = new Encryptor();
     private final MessageUtil messageUtil;
     private final UserInput userInput;
+    private final FileWriters fileWriters;
 
     private boolean userHasAccount = false;
-    private String userName;
+    private String userFirstName;
     private String userLastName;
     private String userEmail;
     private int userAge;
     private String userPassword;
     private String hashedPassword;
 
-    public UserProcess(UserInput userInput, MessageUtil messageUtil) {
+    private String[] userCredentialsArray = new String[5];
+
+    public UserProcess(UserInput userInput, MessageUtil messageUtil, FileWriters fileWriters) {
         this.userInput = userInput;
         this.messageUtil = messageUtil;
+        this.fileWriters = fileWriters;
     }
 
 
@@ -41,41 +47,64 @@ public class UserProcess {
 
     }
 
+
     public void setUserFirstName(String firstName) {
-        this.userName = firstName;
+        this.userFirstName = firstName;
+        registerUserFirstName(userFirstName);
     }
 
     public String getUserFirstName(String firstName) {
         return firstName;
     }
 
+    public void registerUserFirstName(String firstName) {
+        userCredentialsArray[0] = firstName;
+
+    }
+
     public void setUserLastName(String lastName) {
         this.userLastName = lastName;
+        registerUserLastName(userLastName);
     }
 
     public String getUserLastName(String lastName) {
         return lastName;
     }
 
+    public void registerUserLastName(String lastName) {
+        userCredentialsArray[1] = lastName;
+    }
+
     public void setUserAge(int age) {
         this.userAge = age;
+        registerUserAge(String.valueOf(userAge));
     }
 
     public int getUserAge(int age) {
         return age;
     }
 
+    public void registerUserAge(String age) {
+        userCredentialsArray[2] = age;
+
+    }
+
     public void setUserEmail(String email) {
         this.userEmail = email;
+        registerUserEmail(userEmail);
     }
 
     public String getUserEmail(String email) {
         return email;
     }
 
+    public void registerUserEmail(String email) {
+        userCredentialsArray[3] = email;
+    }
+
     public void setUserPassword(String password) throws NoSuchAlgorithmException {
         userPassword = password;
-        System.out.println("DEBUG >> password = " + userPassword);
+        // DEBUG System.out.println("DEBUG >> password = " + userPassword);
         setCurrentPasswordToHashed(password);
     }
 
@@ -87,7 +116,7 @@ public class UserProcess {
         userPassword = null;
         password = null;
 
-        // DEBUG System.out.println("userPassword = " + userPassword + " password "  + password + " hashedPassword = " + hashedPassword);
+        registerUserHashedPassword(hashedPassword);
     }
 
 
@@ -95,9 +124,19 @@ public class UserProcess {
         return this.hashedPassword;
     }
 
+    public void registerUserHashedPassword(String hashedPassword) {
+        userCredentialsArray[4] = hashedPassword;
+    }
+
     private void passwordChecker() throws NoSuchAlgorithmException {
         if(encryptor.encryptString(userPassword).equals(getUserHashedPassword())) {
             System.out.println("Correct");
         }
+    }
+
+
+    public void collectUserCredentials() throws IOException {
+        System.out.println(userCredentialsArray);
+        fileWriters.writeUserCredentialsAsString(userCredentialsArray);
     }
 }

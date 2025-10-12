@@ -1,10 +1,10 @@
 package me.alextzamalis.scanner;
 
 import me.alextzamalis.exceptions.InvalidEmailExcpetion;
+import me.alextzamalis.file.FileWriters;
 import me.alextzamalis.process.UserProcess;
 import me.alextzamalis.util.Constants;
 import me.alextzamalis.util.MessageUtil;
-import org.jetbrains.annotations.NotNull;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
@@ -38,7 +38,13 @@ public class UserInput{
             System.out.print("Wrong input! you can only choose (in / up) >> ");
             userCurrentInput = input.nextLine();
         }
+        //signInSignUpCheck();
     }
+
+//    public boolean signInSignUpCheck() {
+//
+//        return this.userCurrentInput.equalsIgnoreCase("in");
+//    }
 
     public void userFirstNameInput(MessageUtil messageUtil) {
         messageUtil.userFirstNameInput();
@@ -46,9 +52,6 @@ public class UserInput{
         while(userCurrentInput.length() < constants.MIN_NAME_CHAR || userCurrentInput.length() > constants.MAX_NAME_CHAR) {
             System.out.print("You must have a name that has 3-20 characters >> ");
             userCurrentInput = input.nextLine();
-        }
-        if (user != null) {
-            // example: user.setUserName(userCurrentInput);
         }
         user.setUserFirstName(userCurrentInput);
 
@@ -65,6 +68,7 @@ public class UserInput{
         if (user != null) {
             // example: user.setUserName(userCurrentInput);
         }
+        user.setUserLastName(userCurrentInput);
 
         userCurrentInput = null; // unassigns the current last name after it is set to the user and stored
     }
