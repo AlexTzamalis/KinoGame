@@ -80,14 +80,14 @@ public class UserProcess {
     }
 
     public void setCurrentPasswordToHashed(String password) throws NoSuchAlgorithmException {
-        System.out.println("password = " + password + " hashedPassword = " + hashedPassword);
+        // DEBUG System.out.println("password = " + password + " hashedPassword = " + hashedPassword);
         hashedPassword = encryptor.encryptString(password);
 
         // current passwords reset in here and we only store the hashed password
         userPassword = null;
         password = null;
 
-        System.out.println("userPassword = " + userPassword + " password "  + password + " hashedPassword = " + hashedPassword);
+        // DEBUG System.out.println("userPassword = " + userPassword + " password "  + password + " hashedPassword = " + hashedPassword);
     }
 
 
