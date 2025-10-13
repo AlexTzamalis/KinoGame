@@ -19,6 +19,8 @@ public class UserInput{
     private String userCurrentInput;
     private String userCurrentEmail;
     private String userCurrentPassword;
+    private int userCurrentAge;
+    private boolean signInInput = false;
 
     public UserInput() {
 
@@ -38,19 +40,17 @@ public class UserInput{
             System.out.print("Wrong input! you can only choose (in / up) >> ");
             userCurrentInput = input.nextLine();
         }
-        //signInSignUpCheck();
     }
 
-//    public boolean signInSignUpCheck() {
-//
-//        return this.userCurrentInput.equalsIgnoreCase("in");
-//    }
+    public boolean signInSignUpCheck() {
+        return this.userCurrentInput.equalsIgnoreCase("in");
+    }
 
     public void userFirstNameInput(MessageUtil messageUtil) {
         messageUtil.userFirstNameInput();
         userCurrentInput = input.nextLine();
         while(userCurrentInput.length() < constants.MIN_NAME_CHAR || userCurrentInput.length() > constants.MAX_NAME_CHAR) {
-            System.out.print("You must have a name that has 3-20 characters >> ");
+            messageUtil.userFirstNameRetry();
             userCurrentInput = input.nextLine();
         }
         user.setUserFirstName(userCurrentInput);
@@ -62,7 +62,7 @@ public class UserInput{
         messageUtil.userLastNameInput();
         userCurrentInput = input.nextLine();
         while(userCurrentInput.length() < constants.MIN_NAME_CHAR || userCurrentInput.length() > constants.MAX_NAME_CHAR) {
-            System.out.print("You must have a last name that has 3-20 characters >> ");
+            messageUtil.userLastNameRetry();
             userCurrentInput = input.nextLine();
         }
         if (user != null) {
@@ -71,6 +71,20 @@ public class UserInput{
         user.setUserLastName(userCurrentInput);
 
         userCurrentInput = null; // unassigns the current last name after it is set to the user and stored
+    }
+
+    public void userAgeInput(MessageUtil messageUtil) {
+        messageUtil.userAgeInput();
+        userCurrentAge = input.nextInt();
+        while(userCurrentAge < constants.MINIMUM_AGE_REQUIREMENT) {
+            messageUtil.userAgeRetry();
+            userCurrentAge = input.nextInt();
+        }
+
+        user.setUserAge(userCurrentAge);
+
+        userCurrentAge = 0;
+        input.nextLine();
     }
 
     public void userEmailInput(MessageUtil messageUtil) {
@@ -91,12 +105,12 @@ public class UserInput{
 
             } catch (InvalidEmailExcpetion e){
                 System.out.println(e.getMessage());
-                System.out.print("Please enter a valid Email: ");
+                messageUtil.userInvalidEmailExceptionRetry();
                 userCurrentEmail = input.nextLine();
 
             } catch (Exception e) {
                 System.out.println("Unexpected error: " + e.getMessage());
-                System.out.print("Try again: ");
+                messageUtil.userEmailExceptionRetry();
                 userCurrentEmail = input.nextLine();
             }
         }
@@ -111,7 +125,7 @@ public class UserInput{
         messageUtil.userPasswordInput();
         userCurrentPassword = input.nextLine();
         while(userCurrentPassword.length() < constants.MIN_PASSWORD_DIGITS || userCurrentPassword.length() > constants.MAX_PASSWORD_DIGITS) {
-            System.out.print("You must have a password that has atleast 4 or more digits: ");
+            messageUtil.userPasswordRetry();
             userCurrentPassword = input.nextLine();
         }
         user.setUserPassword(userCurrentPassword);

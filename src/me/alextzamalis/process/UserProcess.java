@@ -32,7 +32,6 @@ public class UserProcess {
     }
 
 
-
     public void signUpProcess() {
         //messageUtil.signUpStageMessages();
         // call userInput methods to collect data:
@@ -47,14 +46,13 @@ public class UserProcess {
 
     }
 
-
     public void setUserFirstName(String firstName) {
         this.userFirstName = firstName;
         registerUserFirstName(userFirstName);
     }
 
-    public String getUserFirstName(String firstName) {
-        return firstName;
+    public String getUserFirstName() {
+        return this.userFirstName;
     }
 
     public void registerUserFirstName(String firstName) {
@@ -129,14 +127,18 @@ public class UserProcess {
     }
 
     private void passwordChecker() throws NoSuchAlgorithmException {
-        if(encryptor.encryptString(userPassword).equals(getUserHashedPassword())) {
+        if (encryptor.encryptString(userPassword).equals(getUserHashedPassword())) {
             System.out.println("Correct");
         }
     }
 
 
     public void collectUserCredentials() throws IOException {
-        System.out.println(userCredentialsArray);
+        System.out.println("DEBUG >> Entered collectUserCredentials!");
+        for (int i = 0; i < userCredentialsArray.length; i++) {
+            System.out.println(userCredentialsArray[i]);
+        }
+
         fileWriters.writeUserCredentialsAsString(userCredentialsArray);
     }
 }

@@ -31,7 +31,7 @@ public class FileWriters {
             System.out.println(Arrays.toString(collectedUserCredentials));
             userCredentialsWriter.write(Arrays.toString(collectedUserCredentials));
         }
-        userCredentialsWriter.close();
+
     }
 
     public void writeUserData() {
