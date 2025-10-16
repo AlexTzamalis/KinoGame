@@ -56,6 +56,25 @@ public class UserManager {
             System.out.println("4. Exit");
             System.out.print("Entert choice: ");
 
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline left over..
+
+            switch (choice) {
+                case 1:
+                    registerUser();
+                    break;
+                case 2:
+                    login();
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    return; // gets out of the start method so it stops the application.
+                default:
+                    System.out.println("Invalid choice, Please select 1 , 2 , 3 or 4 ");
+                    break;
+            }
         }
     }
 }
