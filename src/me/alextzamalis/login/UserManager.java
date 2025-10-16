@@ -46,5 +46,17 @@ public class UserManager {
         }
         System.out.println("Login failed. Username or password is incorrect.");
     }
+
+    public void start() {
+        while(true) {
+            System.out.println("\nUser Management System");
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. Forget Password");
+            System.out.println("4. Exit");
+            System.out.print("Entert choice: ");
+
+        }
+    }
 }
 
