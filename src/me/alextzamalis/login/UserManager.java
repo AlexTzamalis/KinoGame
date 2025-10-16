@@ -1,7 +1,9 @@
 package me.alextzamalis.login;
 
+import me.alextzamalis.exceptions.InvalidEmailExcpetion;
 import me.alextzamalis.util.Constants;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +113,34 @@ public class UserManager {
                     break;
             }
         }
+    }
+
+    public void emailInput(String email){
+        System.out.println();
+        email = scanner.nextLine();
+        while(true) {
+            try {
+                if (isValidEmail(email)) {
+
+                } else {
+                    throw new InvalidEmailExcpetion("Invalid email format!");
+                }
+
+            } catch (InvalidEmailExcpetion e) {
+                System.out.println(e.getMessage());
+                System.out.println();
+                email = scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Unexcepted error: " + e.getMessage());
+                System.out.println();
+                email = scanner.nextLine();
+            }
+        }
+        }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        return email != null && email.matches(emailRegex);
     }
 
     public void repeatPassword(String password) {
