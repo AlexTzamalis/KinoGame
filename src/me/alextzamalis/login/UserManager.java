@@ -2,17 +2,19 @@ package me.alextzamalis.login;
 
 import me.alextzamalis.exceptions.InvalidEmailExcpetion;
 import me.alextzamalis.util.Constants;
-
-import java.nio.channels.ScatteringByteChannel;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
+import java.util.Random;
 
 public class UserManager {
-    private List<User> users = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
-    private Constants con = new Constants();
+
+    private List<User> users = new ArrayList<>();                        // all users array
+    private Scanner scanner = new Scanner(System.in);                    // user inputs
+    private Constants con = new Constants();                             // all in house constants
+    private Random random = new Random();                                // Generates a random number
+    private UUID uuid;                                                   // Generates random UUID with Long numbers
 
     // REGISTER A NEW USER
     public void registerUser() {
@@ -33,8 +35,11 @@ public class UserManager {
         System.out.print("Enter secret anwser: ");
         String secretAnswer = scanner.nextLine();
 
-        users.add(new User(username, password, email, secretQuestion, secretAnswer));
+        uuid = generateUserUUID(this.uuid);
+
+        users.add(new User(username, password, email, secretQuestion, secretAnswer, uuid));
         System.out.println("Registration successful!");
+        System.out.println("User unique id is: " + uuid );
     }
 
     // USER LOGIN
@@ -148,7 +153,11 @@ public class UserManager {
             System.out.print("Enter password again: ");
             password = scanner.nextLine();
         }
+    }
 
+    public UUID generateUserUUID(UUID uuid) {
+        System.out.println(new UUID(random.nextLong(), random.nextLong()));
+        return new UUID(random.nextLong(), random.nextLong());
     }
 }
 

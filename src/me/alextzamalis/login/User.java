@@ -1,26 +1,30 @@
 package me.alextzamalis.login;
 
+import java.util.UUID;
+
 public class User {
+
     private String username;
     private String password;
     private String email;
     private String secretQuestion;
     private String secretAnswer;
-
     private String passwordHashed;
+    private UUID uuid;
 
     // Constructor
     public User(String username,
                 String password,
                 String email,
                 String secretQuestion,
-                String secretAnswer) {
+                String secretAnswer,
+                UUID uuid) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.secretQuestion = secretQuestion;
         this.secretAnswer = secretAnswer;
-        this.passwordHashed = password;
+        this.uuid = uuid;
     }
 
     /*
@@ -53,5 +57,5 @@ public class User {
         this.password = password;
     }
 
-    //public
+
 }
