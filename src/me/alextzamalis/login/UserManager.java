@@ -1,5 +1,7 @@
 package me.alextzamalis.login;
 
+import me.alextzamalis.util.Constants;
+
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Scanner;
 public class UserManager {
     private List<User> users = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
+    private Constants con = new Constants();
 
     // REGISTER A NEW USER
     public void registerUser() {
@@ -16,6 +19,7 @@ public class UserManager {
 
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
+        repeatPassword(password);
 
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
@@ -61,6 +65,7 @@ public class UserManager {
 
                     System.out.println("Enter new password: ");
                     String newPassword = scanner.nextLine();
+                    repeatPassword(newPassword);
                     user.setPassword(newPassword);
 
                     System.out.println("Password reset successful.");
@@ -75,6 +80,7 @@ public class UserManager {
         System.out.println("User not found");
     }
 
+    // START THE USER MANAGEMENT ACTION OPERATION
     public void start() {
         while(true) {
             System.out.println("\nUser Management System");
@@ -95,6 +101,7 @@ public class UserManager {
                     login();
                     break;
                 case 3:
+                    forgetPassword();
                     break;
                 case 4:
                     System.out.println("Exiting...");
@@ -104,6 +111,15 @@ public class UserManager {
                     break;
             }
         }
+    }
+
+    public void repeatPassword(String password) {
+        while(password.length() < con.MIN_PASSWORD_DIGITS || password.length() > con.MAX_PASSWORD_DIGITS) {
+            System.out.println("Passwords must be atleast 4 digits long up to 48");
+            System.out.print("Enter password again: ");
+            password = scanner.nextLine();
+        }
+
     }
 }
 

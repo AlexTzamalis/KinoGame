@@ -7,6 +7,8 @@ public class User {
     private String secretQuestion;
     private String secretAnswer;
 
+    private String passwordHashed;
+
     // Constructor
     public User(String username,
                 String password,
@@ -18,6 +20,7 @@ public class User {
         this.email = email;
         this.secretQuestion = secretQuestion;
         this.secretAnswer = secretAnswer;
+        this.passwordHashed = password;
     }
 
     /*
@@ -49,4 +52,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    //public
 }
