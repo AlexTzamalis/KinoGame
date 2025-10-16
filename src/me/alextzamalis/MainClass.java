@@ -31,6 +31,7 @@ public class MainClass {
 
         // SIGN IN
         userInput.userSignInSignUp();
+
         if (userInput.signInSignUpCheck()) {
             userInput.userEmailInput(messageUtil);
             userInput.userPasswordInput(messageUtil);

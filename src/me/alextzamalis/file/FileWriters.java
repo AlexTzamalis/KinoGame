@@ -19,6 +19,7 @@ public class FileWriters {
         try {
             BufferedWriter userCredentialsWriter = new BufferedWriter(new java.io.FileWriter(constants.USER_CREDENTIALS_FILE));
             BufferedWriter userDataWriter = new BufferedWriter(new java.io.FileWriter(constants.USER_DATA_FILE));
+            userCredentialsWriter.write("w");
 
         } catch (IOException e)  {
             e.printStackTrace();
