@@ -20,5 +20,24 @@ public class User {
         this.secretAnswer = secretAnswer;
     }
 
+    // Getters and Setters
+    public String getUsername() {
+        return username;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSecretQuestion() {
+        return secretQuestion;
+    }
+
+    public String getSecretAnswer() {
+        return  secretAnswer;
+    }
 }
