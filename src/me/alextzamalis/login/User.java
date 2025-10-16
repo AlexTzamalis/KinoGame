@@ -20,7 +20,9 @@ public class User {
         this.secretAnswer = secretAnswer;
     }
 
-    // Getters and Setters
+    /*
+      Getters and Setters for the users credentials
+    */
     public String getUsername() {
         return username;
     }
@@ -39,5 +41,12 @@ public class User {
 
     public String getSecretAnswer() {
         return  secretAnswer;
+    }
+
+    /*
+     Update user's password
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
