@@ -25,6 +25,7 @@ public class UserManager {
 
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
+        emailInput(email);
 
         System.out.print("Enter secret question: ");
         String secretQuestion = scanner.nextLine();
@@ -116,23 +117,21 @@ public class UserManager {
     }
 
     public void emailInput(String email){
-        System.out.println();
-        email = scanner.nextLine();
         while(true) {
             try {
                 if (isValidEmail(email)) {
-
+                    return;
                 } else {
                     throw new InvalidEmailExcpetion("Invalid email format!");
                 }
 
             } catch (InvalidEmailExcpetion e) {
                 System.out.println(e.getMessage());
-                System.out.println();
+                System.out.print("Try again: ");
                 email = scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Unexcepted error: " + e.getMessage());
-                System.out.println();
+                System.out.print("Try again: ");
                 email = scanner.nextLine();
             }
         }
