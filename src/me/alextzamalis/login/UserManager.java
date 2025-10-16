@@ -29,4 +29,22 @@ public class UserManager {
         users.add(new User(username, password, email, secretQuestion, secretAnswer));
         System.out.println("Registration successful!");
     }
+
+    // USER LOGIN
+    public void login() {
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        for(User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                System.out.println("Login Successful!");
+                return; // finished this method task so only login will be printed!
+            }
+        }
+        System.out.println("Login failed. Username or password is incorrect.");
+    }
 }
+
