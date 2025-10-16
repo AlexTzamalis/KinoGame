@@ -1,8 +1,13 @@
 package me.alextzamalis.login;
 
+import me.alextzamalis.encryption.Encryptor;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class User {
+
+    private Encryptor encryptor = new Encryptor();
 
     private String username;
     private String password;
@@ -50,12 +55,17 @@ public class User {
         return  secretAnswer;
     }
 
+    public UUID getUUID() {
+        return uuid;
+    }
+
     /*
      Update user's password
      */
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 
 }

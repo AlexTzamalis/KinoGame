@@ -1,7 +1,10 @@
 package me.alextzamalis.login;
 
+import me.alextzamalis.encryption.Encryptor;
 import me.alextzamalis.exceptions.InvalidEmailExcpetion;
 import me.alextzamalis.util.Constants;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,17 +16,21 @@ public class UserManager {
     private List<User> users = new ArrayList<>();                        // all users array
     private Scanner scanner = new Scanner(System.in);                    // user inputs
     private Constants con = new Constants();                             // all in house constants
+    private Encryptor encryptor = new Encryptor();
     private Random random = new Random();                                // Generates a random number
     private UUID uuid;                                                   // Generates random UUID with Long numbers
 
     // REGISTER A NEW USER
-    public void registerUser() {
+    public void registerUser() throws NoSuchAlgorithmException {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
 
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
         repeatPassword(password);
+        String passwordToHashed = encryptor.encryptString(password);
+        password = null;
+        System.out.println("DEBUG" + password + " " + passwordToHashed);
 
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
@@ -37,9 +44,10 @@ public class UserManager {
 
         uuid = generateUserUUID(this.uuid);
 
-        users.add(new User(username, password, email, secretQuestion, secretAnswer, uuid));
+        users.add(new User(username, passwordToHashed, email, secretQuestion, secretAnswer, uuid));
         System.out.println("Registration successful!");
-        System.out.println("User unique id is: " + uuid );
+        System.out.println("DEBUG User unique id is: " + uuid );
+
     }
 
     // USER LOGIN
@@ -60,7 +68,7 @@ public class UserManager {
     }
 
     // FORGET PASSWORD ACTION OPERATION
-    public void forgetPassword() {
+    public void forgetPassword() throws NoSuchAlgorithmException {
         System.out.print("Enter your username: ");
         String username = scanner.nextLine();
 
@@ -74,6 +82,9 @@ public class UserManager {
                     System.out.println("Enter new password: ");
                     String newPassword = scanner.nextLine();
                     repeatPassword(newPassword);
+                    String passwordToHashed = encryptor.encryptString(newPassword);
+                    newPassword = null;
+                    System.out.println("DEBUG: " + newPassword + " " + passwordToHashed);
                     user.setPassword(newPassword);
 
                     System.out.println("Password reset successful.");
@@ -89,7 +100,7 @@ public class UserManager {
     }
 
     // START THE USER MANAGEMENT ACTION OPERATION
-    public void start() {
+    public void start() throws NoSuchAlgorithmException {
         while(true) {
             System.out.println("\nUser Management System");
             System.out.println("1. Register");
@@ -156,7 +167,6 @@ public class UserManager {
     }
 
     public UUID generateUserUUID(UUID uuid) {
-        System.out.println(new UUID(random.nextLong(), random.nextLong()));
         return new UUID(random.nextLong(), random.nextLong());
     }
 }
