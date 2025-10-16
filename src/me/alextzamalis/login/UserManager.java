@@ -47,6 +47,34 @@ public class UserManager {
         System.out.println("Login failed. Username or password is incorrect.");
     }
 
+    // FORGET PASSWORD ACTION OPERATION
+    public void forgetPassword() {
+        System.out.print("Enter your username: ");
+        String username = scanner.nextLine();
+
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                System.out.println("Answer the secret question: " + user.getSecretQuestion());
+                String answer = scanner.nextLine();
+
+                if (user.getSecretAnswer().equals(answer)) {
+
+                    System.out.println("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    user.setPassword(newPassword);
+
+                    System.out.println("Password reset successful.");
+                    return; // exit from the method
+                }
+                else  {
+                    System.out.println("Incorrect answer. ");
+                    return; // incorrect and exits
+                }
+            }
+        }
+        System.out.println("User not found");
+    }
+
     public void start() {
         while(true) {
             System.out.println("\nUser Management System");
