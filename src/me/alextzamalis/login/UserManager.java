@@ -1,173 +1,289 @@
 package me.alextzamalis.login;
 
+import me.alextzamalis.database.UserDatabase;
 import me.alextzamalis.encryption.Encryptor;
-import me.alextzamalis.exceptions.InvalidEmailExcpetion;
+import me.alextzamalis.exceptions.InvalidEmailException;
 import me.alextzamalis.util.Constants;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.UUID;
-import java.util.Random;
 
+/**
+ * Manages user registration and authentication operations.
+ * 
+ * <p>This class handles the core user management functionality including:
+ * <ul>
+ *   <li>User registration with validation</li>
+ *   <li>User authentication (login)</li>
+ *   <li>Duplicate username/email checking</li>
+ *   <li>Integration with persistent database storage</li>
+ * </ul>
+ * 
+ * <p><strong>Security Considerations:</strong>
+ * <ul>
+ *   <li>Passwords are stored as SHA-256 hashes, never in plain text</li>
+ *   <li>Password validation ensures minimum and maximum length requirements</li>
+ *   <li>Email validation prevents invalid email formats</li>
+ *   <li>All data is persisted to a local database file</li>
+ * </ul>
+ * 
+ * @author AlexTzamalis
+ * @version 2.0
+ */
 public class UserManager {
 
-    private List<User> users = new ArrayList<>();                        // all users array
-    private Scanner scanner = new Scanner(System.in);                    // user inputs
-    private Constants con = new Constants();                             // all in house constants
+    private Scanner scanner = new Scanner(System.in);
     private Encryptor encryptor = new Encryptor();
-    private Random random = new Random();                                // Generates a random number
-    private UUID uuid;                                                   // Generates random UUID with Long numbers
+    private UserDatabase database = new UserDatabase();
 
-    // REGISTER A NEW USER
-    public void registerUser() throws NoSuchAlgorithmException {
+    /**
+     * Registers a new user with username, password, and email.
+     * 
+     * <p>This method:
+     * <ol>
+     *   <li>Validates username uniqueness</li>
+     *   <li>Validates password strength and confirms it</li>
+     *   <li>Validates email format and uniqueness</li>
+     *   <li>Hashes the password before storage</li>
+     *   <li>Generates a unique UUID for the user</li>
+     *   <li>Saves user to persistent database</li>
+     * </ol>
+     * 
+     * @return the newly created User object, or null if registration failed
+     * @throws NoSuchAlgorithmException if SHA-256 algorithm is not available
+     * @throws IOException if database operation fails
+     */
+    public User registerUser() throws NoSuchAlgorithmException, IOException {
+        // Get and validate username
         System.out.print("Enter username: ");
-        String username = scanner.nextLine();
+        String username = scanner.nextLine().trim();
+        
+        // Check for duplicate username
+        if (database.isUsernameTaken(username)) {
+            System.out.println("Username already taken. Please choose another.");
+            return null;
+        }
+        
+        // Validate username length
+        if (username.length() < Constants.MIN_NAME_CHAR || username.length() > Constants.MAX_NAME_CHAR) {
+            System.out.println("Username must be between " + Constants.MIN_NAME_CHAR + 
+                             " and " + Constants.MAX_NAME_CHAR + " characters.");
+            return null;
+        }
 
+        // Get and validate password
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
-        repeatPassword(password);
-        String passwordToHashed = encryptor.encryptString(password);
+        password = validateAndConfirmPassword(password);
+        
+        if (password == null) {
+            System.out.println("Registration cancelled due to password validation failure.");
+            return null;
+        }
+        
+        // Hash password before storing
+        String passwordHash = encryptor.encryptString(password);
+        // Clear password from memory as soon as possible
         password = null;
-        System.out.println("DEBUG" + password + " " + passwordToHashed);
 
+        // Get and validate email
         System.out.print("Enter email: ");
-        String email = scanner.nextLine();
-        emailInput(email);
+        String email = scanner.nextLine().trim();
+        email = validateEmail(email);
+        
+        if (email == null) {
+            System.out.println("Registration cancelled due to email validation failure.");
+            return null;
+        }
+        
+        // Check for duplicate email
+        if (database.isEmailTaken(email)) {
+            System.out.println("Email already registered. Please use a different email.");
+            return null;
+        }
 
-        System.out.print("Enter secret question: ");
-        String secretQuestion = scanner.nextLine();
-
-        System.out.print("Enter secret anwser: ");
-        String secretAnswer = scanner.nextLine();
-
-        uuid = generateUserUUID(this.uuid);
-
-        users.add(new User(username, passwordToHashed, email, secretQuestion, secretAnswer, uuid));
+        // Generate unique UUID for user
+        UUID uuid = UUID.randomUUID();
+        
+        // Create user with default values: not admin, balance 0.0, current time
+        User newUser = new User(username, passwordHash, email, uuid, false, 0.0, LocalDateTime.now());
+        
+        // Save to database
+        database.addUser(newUser);
+        
         System.out.println("Registration successful!");
-        System.out.println("DEBUG User unique id is: " + uuid );
-
+        return newUser;
     }
 
-    // USER LOGIN
-    public void login() {
+    /**
+     * Authenticates a user by username and password.
+     * 
+     * <p>This method compares the provided password (after hashing) with the stored
+     * password hash. Passwords are never compared in plain text.
+     * 
+     * @return the authenticated User object if login succeeds, null otherwise
+     * @throws NoSuchAlgorithmException if SHA-256 algorithm is not available
+     * @throws IOException if database operation fails
+     */
+    public User login() throws NoSuchAlgorithmException, IOException {
         System.out.print("Enter username: ");
-        String username = scanner.nextLine();
+        String username = scanner.nextLine().trim();
 
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        for(User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                System.out.println("Login Successful!");
-                return; // finished this method task so only login will be printed!
-            }
+        // Hash the provided password to compare with stored hash
+        String passwordHash = encryptor.encryptString(password);
+        password = null; // Clear password from memory
+
+        // Find user in database
+        User user = database.findUserByUsername(username);
+        
+        if (user != null && user.getPassword().equals(passwordHash)) {
+            System.out.println("Login Successful! Welcome, " + username + "!");
+            return user;
         }
+        
         System.out.println("Login failed. Username or password is incorrect.");
+        return null;
     }
 
-    // FORGET PASSWORD ACTION OPERATION
-    public void forgetPassword() throws NoSuchAlgorithmException {
-        System.out.print("Enter your username: ");
-        String username = scanner.nextLine();
-
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                System.out.println("Answer the secret question: " + user.getSecretQuestion());
-                String answer = scanner.nextLine();
-
-                if (user.getSecretAnswer().equals(answer)) {
-
-                    System.out.println("Enter new password: ");
-                    String newPassword = scanner.nextLine();
-                    repeatPassword(newPassword);
-                    String passwordToHashed = encryptor.encryptString(newPassword);
-                    newPassword = null;
-                    System.out.println("DEBUG: " + newPassword + " " + passwordToHashed);
-                    user.setPassword(newPassword);
-
-                    System.out.println("Password reset successful.");
-                    return; // exit from the method
-                }
-                else  {
-                    System.out.println("Incorrect answer. ");
-                    return; // incorrect and exits
-                }
-            }
-        }
-        System.out.println("User not found");
-    }
-
-    // START THE USER MANAGEMENT ACTION OPERATION
-    public void start() throws NoSuchAlgorithmException {
-        while(true) {
-            System.out.println("\nUser Management System");
+    /**
+     * Starts the user management system main menu loop.
+     * 
+     * <p>This method displays a menu and handles user input for:
+     * <ul>
+     *   <li>User registration</li>
+     *   <li>User login</li>
+     *   <li>Application exit</li>
+     * </ul>
+     * 
+     * @return the authenticated User object after successful login/registration, null if user exits
+     * @throws NoSuchAlgorithmException if SHA-256 algorithm is not available
+     * @throws IOException if database operation fails
+     */
+    public User start() throws NoSuchAlgorithmException, IOException {
+        while (true) {
+            System.out.println("\n=== User Management System ===");
             System.out.println("1. Register");
             System.out.println("2. Login");
-            System.out.println("3. Forget Password");
-            System.out.println("4. Exit");
-            System.out.print("Entert choice: ");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline left over..
+            try {
+                int choice = Integer.parseInt(scanner.nextLine().trim());
 
-            switch (choice) {
-                case 1:
-                    registerUser();
-                    break;
-                case 2:
-                    login();
-                    break;
-                case 3:
-                    forgetPassword();
-                    break;
-                case 4:
-                    System.out.println("Exiting...");
-                    return; // gets out of the start method so it stops the application.
-                default:
-                    System.out.println("Invalid choice, Please select 1 , 2 , 3 or 4 ");
-                    break;
+                switch (choice) {
+                    case 1:
+                        User newUser = registerUser();
+                        if (newUser != null) {
+                            // Load fresh user data from database to ensure consistency
+                            return database.findUserByUsername(newUser.getUsername());
+                        }
+                        break;
+                    case 2:
+                        User loggedInUser = login();
+                        if (loggedInUser != null) {
+                            // Load fresh user data from database to ensure consistency
+                            return database.findUserByUsername(loggedInUser.getUsername());
+                        }
+                        break;
+                    case 3:
+                        System.out.println("Exiting...");
+                        closeScanner();
+                        return null;
+                    default:
+                        System.out.println("Invalid choice. Please select 1, 2, or 3.");
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number (1-3).");
             }
         }
     }
 
-    public void emailInput(String email){
-        while(true) {
+    /**
+     * Validates email format and prompts for re-entry if invalid.
+     * 
+     * @param email the email to validate
+     * @return the validated email, or null if validation fails repeatedly
+     */
+    private String validateEmail(String email) {
+        while (true) {
             try {
                 if (isValidEmail(email)) {
-                    return;
+                    return email;
                 } else {
-                    throw new InvalidEmailExcpetion("Invalid email format!");
+                    throw new InvalidEmailException("Invalid email format!");
                 }
-
-            } catch (InvalidEmailExcpetion e) {
+            } catch (InvalidEmailException e) {
                 System.out.println(e.getMessage());
-                System.out.print("Try again: ");
-                email = scanner.nextLine();
-            } catch (Exception e) {
-                System.out.println("Unexcepted error: " + e.getMessage());
-                System.out.print("Try again: ");
-                email = scanner.nextLine();
+                System.out.print("Try again (or 'cancel' to abort): ");
+                email = scanner.nextLine().trim();
+                
+                if (email.equalsIgnoreCase("cancel")) {
+                    return null;
+                }
             }
         }
-        }
+    }
 
+    /**
+     * Validates email format using regex pattern.
+     * 
+     * @param email the email to validate
+     * @return true if email format is valid, false otherwise
+     */
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        return email != null && email.matches(emailRegex);
-    }
-
-    public void repeatPassword(String password) {
-        while(password.length() < con.MIN_PASSWORD_DIGITS || password.length() > con.MAX_PASSWORD_DIGITS) {
-            System.out.println("Passwords must be atleast 4 digits long up to 48");
-            System.out.print("Enter password again: ");
-            password = scanner.nextLine();
+        if (email == null || email.isEmpty()) {
+            return false;
         }
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        return email.matches(emailRegex);
     }
 
-    public UUID generateUserUUID(UUID uuid) {
-        return new UUID(random.nextLong(), random.nextLong());
+    /**
+     * Validates password length and confirms it by asking user to re-enter.
+     * 
+     * @param password the initial password entry
+     * @return the validated and confirmed password, or null if validation fails
+     */
+    private String validateAndConfirmPassword(String password) {
+        // Validate password length
+        while (password.length() < Constants.MIN_PASSWORD_DIGITS || 
+               password.length() > Constants.MAX_PASSWORD_DIGITS) {
+            System.out.println("Password must be between " + Constants.MIN_PASSWORD_DIGITS + 
+                             " and " + Constants.MAX_PASSWORD_DIGITS + " characters.");
+            System.out.print("Enter password again (or 'cancel' to abort): ");
+            password = scanner.nextLine();
+            
+            if (password.equalsIgnoreCase("cancel")) {
+                return null;
+            }
+        }
+
+        // Confirm password
+        System.out.print("Confirm password: ");
+        String confirmPassword = scanner.nextLine();
+
+        if (!password.equals(confirmPassword)) {
+            System.out.println("Passwords do not match!");
+            return null;
+        }
+
+        return password;
+    }
+
+    /**
+     * Closes the scanner resource.
+     * Should be called when the application is terminating.
+     */
+    public void closeScanner() {
+        if (scanner != null) {
+            scanner.close();
+        }
     }
 }
-

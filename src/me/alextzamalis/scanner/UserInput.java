@@ -1,6 +1,6 @@
 package me.alextzamalis.scanner;
 
-import me.alextzamalis.exceptions.InvalidEmailExcpetion;
+import me.alextzamalis.exceptions.InvalidEmailException;
 import me.alextzamalis.file.FileWriters;
 import me.alextzamalis.process.UserProcess;
 import me.alextzamalis.util.Constants;
@@ -13,7 +13,6 @@ public class UserInput{
 
 
     private UserProcess user;
-    private Constants constants = new Constants();
     private final Scanner input = new Scanner(System.in);
 
     private String userCurrentInput;
@@ -49,7 +48,7 @@ public class UserInput{
     public void userFirstNameInput(MessageUtil messageUtil) {
         messageUtil.userFirstNameInput();
         userCurrentInput = input.nextLine();
-        while(userCurrentInput.length() < constants.MIN_NAME_CHAR || userCurrentInput.length() > constants.MAX_NAME_CHAR) {
+        while(userCurrentInput.length() < Constants.MIN_NAME_CHAR || userCurrentInput.length() > Constants.MAX_NAME_CHAR) {
             messageUtil.userFirstNameRetry();
             userCurrentInput = input.nextLine();
         }
@@ -61,7 +60,7 @@ public class UserInput{
     public void userLastNameInput(MessageUtil messageUtil) {
         messageUtil.userLastNameInput();
         userCurrentInput = input.nextLine();
-        while(userCurrentInput.length() < constants.MIN_NAME_CHAR || userCurrentInput.length() > constants.MAX_NAME_CHAR) {
+        while(userCurrentInput.length() < Constants.MIN_NAME_CHAR || userCurrentInput.length() > Constants.MAX_NAME_CHAR) {
             messageUtil.userLastNameRetry();
             userCurrentInput = input.nextLine();
         }
@@ -76,7 +75,7 @@ public class UserInput{
     public void userAgeInput(MessageUtil messageUtil) {
         messageUtil.userAgeInput();
         userCurrentAge = input.nextInt();
-        while(userCurrentAge < constants.MINIMUM_AGE_REQUIREMENT) {
+        while(userCurrentAge < Constants.MINIMUM_AGE_REQUIREMENT) {
             messageUtil.userAgeRetry();
             userCurrentAge = input.nextInt();
         }
@@ -100,10 +99,10 @@ public class UserInput{
                     }
                     break;      // exit loop once current email is valid
                 } else {
-                    throw new InvalidEmailExcpetion("Invalid email format!");
+                    throw new InvalidEmailException("Invalid email format!");
                 }
 
-            } catch (InvalidEmailExcpetion e){
+            } catch (InvalidEmailException e){
                 System.out.println(e.getMessage());
                 messageUtil.userInvalidEmailExceptionRetry();
                 userCurrentEmail = input.nextLine();
@@ -124,7 +123,7 @@ public class UserInput{
     public void userPasswordInput(MessageUtil messageUtil) throws NoSuchAlgorithmException {
         messageUtil.userPasswordInput();
         userCurrentPassword = input.nextLine();
-        while(userCurrentPassword.length() < constants.MIN_PASSWORD_DIGITS || userCurrentPassword.length() > constants.MAX_PASSWORD_DIGITS) {
+        while(userCurrentPassword.length() < Constants.MIN_PASSWORD_DIGITS || userCurrentPassword.length() > Constants.MAX_PASSWORD_DIGITS) {
             messageUtil.userPasswordRetry();
             userCurrentPassword = input.nextLine();
         }

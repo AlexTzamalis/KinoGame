@@ -27,3 +27,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Application Files ###
+users.db
+User_Credentials.txt
+User_Data.txt

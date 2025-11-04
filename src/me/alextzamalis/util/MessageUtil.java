@@ -1,68 +1,145 @@
 package me.alextzamalis.util;
 
-import me.alextzamalis.process.UserProcess;
-import me.alextzamalis.scanner.UserInput;
-
-import java.io.IOException;
 import java.util.Date;
 
-public class MessageUtil{
+/**
+ * Utility class for displaying messages to the console.
+ * 
+ * <p>This class centralizes all user-facing messages to ensure consistency
+ * and make future localization easier. It provides methods for:
+ * <ul>
+ *   <li>Welcome and informational messages</li>
+ *   <li>Input prompts</li>
+ *   <li>Error and retry messages</li>
+ *   <li>Success messages</li>
+ * </ul>
+ * 
+ * @author AlexTzamalis
+ * @version 1.0
+ */
+public class MessageUtil {
 
     private Date date = new Date();
-    private UserInput userInput;
-    private UserProcess userProcess;
 
-
+    /**
+     * Constructs a new MessageUtil instance.
+     */
     public MessageUtil() {
-
+        // Empty constructor
     }
 
-    // setters for wiring
-    public void setUserInput(UserInput userInput) {
-        this.userInput = userInput;
+    /**
+     * Displays the current date and time.
+     */
+    public void currentDate() {
+        System.out.println(this.date);
     }
 
-    public void setUserProcess(UserProcess userProcess) {
-        this.userProcess = userProcess;
+    /**
+     * Displays the welcome message for the application.
+     */
+    public void welcomeMesasge() {
+        System.out.println("--- Welcome to Kino Game! ---");
+        System.out.println();
     }
 
-    public void currentDate() { System.out.println(this.date); }
+    /**
+     * Prompts the user to choose between sign in or sign up.
+     */
+    public void signInsignUpMessage() {
+        System.out.print("Sign In? or Sign up? (in/up) >> ");
+    }
 
-    public void welcomeMesasge() { System.out.println("--- Welcome to Kino Game! ---"); System.out.println(); }
-
-    public void signInsignUpMessage() { System.out.print("Sign In? or Sign up? (in/up) >> "); }
-
-    public void userFirstNameInput(){
+    /**
+     * Prompts the user to enter their first name.
+     */
+    public void userFirstNameInput() {
         System.out.print("Enter your First Name: ");
     }
 
-    public void userFirstNameRetry() { System.out.print("You must have a name that has 3-20 characters >> "); }
+    /**
+     * Displays a retry message for invalid first name input.
+     */
+    public void userFirstNameRetry() {
+        System.out.print("You must have a name that has 3-20 characters >> ");
+    }
 
-    public void userLastNameInput() { System.out.print("Enter your Last Name: "); }
+    /**
+     * Prompts the user to enter their last name.
+     */
+    public void userLastNameInput() {
+        System.out.print("Enter your Last Name: ");
+    }
 
-    public void userLastNameRetry() { System.out.print("You must have a last name that has 3-20 characters >> "); }
+    /**
+     * Displays a retry message for invalid last name input.
+     */
+    public void userLastNameRetry() {
+        System.out.print("You must have a last name that has 3-20 characters >> ");
+    }
 
-    public void userAgeInput() { System.out.print("Enter your age: "); }
+    /**
+     * Prompts the user to enter their age.
+     */
+    public void userAgeInput() {
+        System.out.print("Enter your age: ");
+    }
 
-    public void userAgeRetry() { System.out.print("You must be atleast 21 to sign up!: "); }
+    /**
+     * Displays a retry message for invalid age input.
+     */
+    public void userAgeRetry() {
+        System.out.print("You must be at least 21 to sign up!: ");
+    }
 
-    public void userEmailInput() { System.out.print("Enter your Email: "); }
+    /**
+     * Prompts the user to enter their email address.
+     */
+    public void userEmailInput() {
+        System.out.print("Enter your Email: ");
+    }
 
+    /**
+     * Displays a retry message for invalid email format.
+     */
     public void userInvalidEmailExceptionRetry() {
         System.out.print("Please enter a valid Email: ");
     }
 
+    /**
+     * Displays a generic retry message for email input errors.
+     */
     public void userEmailExceptionRetry() {
         System.out.print("Try again: ");
     }
 
-    public void userPasswordInput() { System.out.print("Enter your Password: "); }
+    /**
+     * Prompts the user to enter their password.
+     */
+    public void userPasswordInput() {
+        System.out.print("Enter your Password: ");
+    }
 
-    public void userPasswordRetry() { System.out.print("You must have a password that has atleast 4 or more digits: "); }
+    /**
+     * Displays a retry message for invalid password input.
+     */
+    public void userPasswordRetry() {
+        System.out.print("You must have a password that has at least 4 or more digits: ");
+    }
 
+    /**
+     * Displays a success message after successful user registration.
+     */
     public void successfulSignUp() {
         System.out.println("You signed up successfully!");
     }
 
-    public void successfulSignIn(String name) { System.out.println("Welcome back " + name ); }
+    /**
+     * Displays a welcome message after successful login.
+     * 
+     * @param name the name of the user who logged in
+     */
+    public void successfulSignIn(String name) {
+        System.out.println("Welcome back " + name);
+    }
 }
